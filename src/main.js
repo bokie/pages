@@ -1,25 +1,5 @@
 ;(function ($) {
 
-var html = document.querySelector('html');
-var docW = document.documentElement.clientWidth;
-var fontScale = docW / 375;
-html.style.fontSize = 14 * fontScale + 'px';
-
-/**
- *            -------
- *            |     |
- * -------------------------------
- * |    |     |     |     |      |
- * |    |     |     |     |      |
- * |    |     |     |     |      |
- * |    |     |     |     |      |
- * |    |     |     |     |      |
- * |    |     |     |     |      |
- * -------------------------------
- *            |     |
- *            -------
- */
-
 /**
  * QuizCard - 答题卡片
  * @extend Card
@@ -100,12 +80,12 @@ $.extend(QuizCards.prototype, {
             template = `
                 <div class="m-quiz-card" data-index=${i}>
                     <div class="quiz-card-title">${data.title}</div>
-                    <div class="quiz-card-content a-slide-in-right">
-                        <img class="quiz-card" src=${data.bgImg} alt="" />
-                        <div class="quiz-options f-clearfix">
-                            <div class="option option-a" data-ref=${data.options[0][1]}>${data.options[0][0]}</div>
-                            <div class="option option-b" data-ref=${data.options[1][1]}>${data.options[1][0]}</div>
-                        </div>
+                    <div class="quiz-options f-clearfix">
+                        <div class="option option-a" data-ref=${data.options[0][1]}>${data.options[0][0]}</div>
+                        <div class="option option-b" data-ref=${data.options[1][1]}>${data.options[1][0]}</div>
+                    </div>
+                    <div class="quiz-card-img a-slide-in-right">
+                        <img class="quiz-card" src=${data.bgImg} />
                     </div>
                 </div>
             `;
@@ -270,7 +250,9 @@ $.extend(QuizCards.prototype, {
     },
     _touchMove: function (e) {
 
-        var eventInfo, target, cardTitle, cardContent, translateVal, answerNodeA, answerNodeA;
+        var eventInfo, target,
+            cardTitle, cardContent, cardItem,
+            translateVal, answerNodeA, answerNodeA;
 
         target = e.target;
 
@@ -280,22 +262,28 @@ $.extend(QuizCards.prototype, {
         eventInfo.offsetX = (e.touches[0].clientX - eventInfo.startX)
 
         // 缓存节点
-        cardTitle = this.quizCards.querySelectorAll('.quiz-card-title')[this._cardIndex];
-        cardContent = this.quizCards.querySelectorAll('.quiz-card-content')[this._cardIndex];
+        cardContent = this.quizCards.querySelectorAll('.m-quiz-card')[this._cardIndex];
+        cardTitle = cardContent.querySelector('.quiz-card-title');
+        cardItem = cardContent.querySelector('.quiz-card-img');
         answerNodeA = cardContent.querySelector('.option-a');
         answerNodeB = cardContent.querySelector('.option-b');
 
         cardTitle.style.opacity = 0;
-        translateVal = 'translateX(' + eventInfo.offsetX + 'px)';
-        cardContent.style.transform = translateVal;
+        // 卡片位移动画
+        translateVal = eventInfo.offsetX + 'px';
+        cardContent.style.left = translateVal;
 
         // 向哪边滑动只保留显示哪边答案
         if (eventInfo.offsetX < 0) {
-            answerNodeA.classList.remove('f-dn');
-            answerNodeB.classList.add('f-dn');
+            answerNodeA.classList.remove('z-hide');
+            answerNodeA.classList.add('z-active');
+            answerNodeB.classList.remove('z-active');
+            answerNodeB.classList.add('z-hide');
         } else {
-            answerNodeB.classList.remove('f-dn');
-            answerNodeA.classList.add('f-dn');
+            answerNodeB.classList.remove('z-hide');
+            answerNodeB.classList.add('z-active');
+            answerNodeA.classList.remove('z-active');
+            answerNodeA.classList.add('z-hide');
         }
 
     },
@@ -309,20 +297,21 @@ $.extend(QuizCards.prototype, {
         if (eventInfo.type !== 'card') return false;
 
         // 缓存节点
-        cardItem = this.quizCards.querySelector('.m-quiz-card');
-        cardTitle = this.quizCards.querySelectorAll('.quiz-card-title')[this._cardIndex];
-        cardContent = this.quizCards.querySelectorAll('.quiz-card-content')[this._cardIndex];
+        cardContent = this.quizCards.querySelectorAll('.m-quiz-card')[this._cardIndex];
+        cardTitle = cardContent.querySelector('.quiz-card-title');
         answerNodeA = cardContent.querySelector('.option-a');
         answerNodeB = cardContent.querySelector('.option-b');
 
         if (!eventInfo.offsetX) return false;
 
         if (Math.abs(eventInfo.offsetX) < 100) {
-            cardContent.style.transform = 'translateX(0)';
-            cardTitle.style.opacity = 1
+            cardContent.style.left = '0';
+            cardTitle.style.opacity = '1';
 
-            answerNodeA.classList.remove('f-dn');
-            answerNodeB.classList.remove('f-dn');
+            answerNodeA.classList.remove('z-active');
+            answerNodeA.classList.remove('z-hide');
+            answerNodeB.classList.remove('z-active');
+            answerNodeB.classList.remove('z-hide');
 
             return false
         }
@@ -330,7 +319,7 @@ $.extend(QuizCards.prototype, {
         // 卡片飞出
         docWidth = document.documentElement.clientWidth;
         cardContent.style.transform = 'translateX(' + directionWidth + 'px)';
-        cardItem.style.opacity = 0;
+        cardContent.style.opacity = 0;
 
         optionSelected = eventInfo.offsetX < 0 ? answerNodeA : answerNodeB;
         this.checkAnswer(optionSelected);
@@ -399,6 +388,7 @@ var audioArr = [
 ];
 var preloadImgs = function(imgArr) {
     var maxCnt = imgArr.length;
+    var restCnt
     for (var i = 0; i < imgArr.length; i++) {
         var img = new Image;
         img.src = imgArr[i];
@@ -408,7 +398,23 @@ var preloadImgs = function(imgArr) {
             progressHandler(progress);
         }
     }
-}
+};
+
+var preloadAudios = function (audioArr) {
+    var totalCnt, restCnt, audio;
+    restCnt = totalCnt = audioArr.length;
+    for (var i = 0; i < totalCnt; i++) {
+        audio = new Audio;
+        audio.src = audioArr[i];
+        audio.oncanplay = function () {
+            restCnt--;
+            console.log(restCnt);
+        };
+    }
+};
+
+preloadAudios(audioArr);
+
 var progressHandler = function (progress) {
     if (progress < 100) {
         var rate = progress + '%';

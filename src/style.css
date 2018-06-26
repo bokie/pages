@@ -80,17 +80,17 @@ ul, ol, li {
         transform: translate3d(0, 0, 0);
     }
 }
-.a-slide-out-left {
-    animation-name: slideOutLeft;
+.a-slide-out-top {
+    animation-name: slideOutTop;
     animation-duration: .3s;
 }
-@keyframes slideOutLeft {
+@keyframes slideOutTop {
     from {
         transform: translate3d(0, 0, 0);
         visibility: visible;
     }
     to {
-        transform: translate3d(-100%, 0, 0);
+        transform: translate3d(0, -100%, 0);
     }
 }
 .a-fade-in {
@@ -110,23 +110,23 @@ ul, ol, li {
 /* m- 页面内容(模块/组件)样式 */
 /* 0. m-page-loading */
 .m-page-loading {
-    background: rgba(0, 0, 0, .92);
+    background: rgba(0, 0, 0, .9);
 }
 .m-page-loading .loading-img {
-    width: 120px;
+    width: 2.1rem;
 }
 .m-page-loading .loading-progress {
     position: absolute;
-    left: 50%; top: 62%;
+    left: 50%; top: 60%;
     transform: translateX(-50%);
     color: #a5b2c3;
-    font-size: 18px;
+    font-size: .3rem;
 }
 /* / m-page-loading */
 
 /* 1. m-page-cover */
 .m-page-cover .page-cover-wrapper {
-    width: 300px;
+    width: 6.25rem;
 }
 .m-page-cover .cover-img {
     width: 100%;
@@ -139,7 +139,7 @@ ul, ol, li {
 /* 答题卡片指示器 */
 .m-quiz-cards .m-cards-indicator {
     position: absolute;
-    left: 50%; bottom: -26px;
+    left: 50%; bottom: -.6rem;
     font-size: 0;
     transform: translateX(-50%);
 }
@@ -163,52 +163,64 @@ ul, ol, li {
 
 /* 答题卡片样式 */
 .m-page-quiz .m-quiz-cards {
-    width: 100%; height: 500px;
+    width: 6.25rem; height: 10rem;
 }
 .m-quiz-cards .m-quiz-card {
     position: absolute;
-    top: 50%; left: 200%;
-    transform: translate(-50%, -50%);
+    right: 200%;
+    width: 100%; height: 100%;
 }
 .m-page-quiz .m-quiz-cards .m-quiz-card.z-active {
-    left: 50%;
+    left: 0;
 }
 .m-quiz-card .quiz-card-title {
     position: absolute;
-    top: -24px; left: -10px; right: -10px;
-    padding: 10px 20px;
+    top: -.5rem; left: -.2rem; right: -.2rem;
+    padding: .2rem .4rem;
     border: 1px solid #a68a5f;
-    border-radius: 50px;
-    font-size: 14px;
+    border-radius: 1rem;
+    font-size: .3rem;
     color: #fff;
     transition: opacity ease-in-out .5s;
     z-index: 3;
 }
-.m-quiz-card .quiz-card-content {
-    width: 300px; height: auto;
-    transform: translateX(0);
-    transition: transform ease-in-out .1s;
-}
 .m-quiz-card .quiz-options {
+    display: flex;
+    justify-content: center;
     position: absolute;
-    bottom: 60px; left: 20px; right: 20px;
-    font-size: 12px;
+    bottom: 1.5rem;
+    width: 100%;
+    font-size: .28rem;
     color: #fff;
     overflow: hidden;
 }
 .m-quiz-card .quiz-options .option {
-    padding: 10px;
+    margin: 0 .2rem;
+    padding: .22rem;
     border: 1px solid #ce8968;
-    width: 100px;
+    width: 2rem;
     background-color: rgba(0, 0, 0, .5);
-    transition: all ease-in .5s;
+    transition: all ease .5s;
 }
-.m-quiz-card .quiz-options .option-a {
-    float: left;
+.m-quiz-card .quiz-options .option-a.z-hide,
+.m-quiz-card .quiz-options .option-b.z-hide {
+    opacity: 0;
 }
-.m-quiz-card .quiz-options .option-b {
-    float: right;
+.m-quiz-card .quiz-options .option-a.z-active {
+    opacity: 1;
+    transform: translateX(1.5rem);
 }
+.m-quiz-card .quiz-options .option-b.z-active {
+    opacity: 1;
+    transform: translateX(-1.4rem);
+}
+.m-quiz-card .quiz-card-img {
+    position: absolute;
+    z-index: -1;
+    transform: translateX(0);
+    transition: transform ease-in-out .1s;
+}
+
 /* / 答题卡片样式 */
 
 /* / m-page-quiz */
@@ -216,53 +228,58 @@ ul, ol, li {
 /* 3. m-page-result 答题结果页面 */
 .m-page-result .m-quiz-result {
     box-sizing: border-box;
-    padding: 30px 20px;
-    border: 1px solid #ccc;
+    padding: .44rem .42rem;
+    width: 6.25rem; height: 10rem;
     border-radius: 10px;
-    width: 320px; height: 500px;
     background: #eee;
 }
 .m-quiz-result .result-title {
     text-align: center;
-    font-size: 24px;
-    margin-bottom: 24px;
+    font-size: .46rem;
+    margin-bottom: .42rem;
 }
 .m-quiz-result .result-content {
     position: relative;
-    margin: 0 50px;
-    padding: 16px;
+    padding: .28rem;
+    padding-bottom: .6rem;
     border: 2px solid #bfbfbf;
 }
 .m-quiz-result .result-content .tag {
+    font-size: .42rem;
+    word-break: keep-all;
     color: #949494;
 }
 .m-quiz-result .result-content .tag-name {
-    font-size: 36px;
+    font-size: .68rem;
     text-align: center;
 }
 .m-quiz-result .result-content .stamp {
     display: inline-block;
     position: absolute;
-    left: 50%;
+    left: 68%; bottom: -.4rem;
     padding: 4px;
-    border: 2px solid #8e8e8e;
-    font-size: 24px;
+    border: .038rem solid #8e8e8e;
+    font-size: .46rem;
     color: #8e8e8e;
     transform: rotate(-20deg);
 }
 .m-quiz-result .result-comment {
-    margin: 60px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0 .88rem;
 }
 .m-quiz-result .result-comment .avatar {
-    float: left;
-    margin-right: 20px;
     border: 2px solid #bcbcbc;
-    width: 60px; height: 60px;
+    width: 1.2rem; height: 1.2rem;
     background: #949494;
-    overflow: hidden;
+    margin-right: 20px;
 }
 .m-quiz-result .result-comment .comment-content {
-    /*word-break: keep-all;*/
+    flex: 1;
+    font-size: .3rem;
+    word-break: keep-all;
+    overflow: hidden;
 }
 .m-quiz-result .result-options {
     display: flex;
@@ -272,10 +289,10 @@ ul, ol, li {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100px; height: 60px;
-    margin: 0 10px;
+    width: 2.1rem; height: 1.25rem;
+    margin: 0 .28rem;
     text-align: center;
-    vertical-align: middle;
+    font-size: .28rem;
     color: #fff;
     background: #949494;
 }
@@ -295,7 +312,7 @@ ul, ol, li {
     transform: translate(-50%, -50%);
 }
 .m-background .card-background {
-    width: 300px; height: 480px;
+    width: 6.25rem; height: 10rem;
 }
 .m-background .card-background .card-bg-item {
     position: absolute;

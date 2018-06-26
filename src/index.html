@@ -5,32 +5,74 @@
     <title>长安城</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="./style.css">
+    <script>
+        // 设置基准文字大小
+        (function () {
+
+            const htmlEle   = document.documentElement;
+
+            let resizeEvent = function () {
+                let docWidth  = htmlEle.clientWidth;
+                docWidth = docWidth >750 ? 750 : docWidth;
+                let fontScale = (docWidth / 750);
+
+                htmlEle.style.fontSize = (100 * fontScale) + 'px';
+            };
+
+            document.addEventListener('DOMContentLoaded', resizeEvent, false);
+            // resize 事件必须绑在 window 对象上？
+            window.addEventListener('resize', resizeEvent, false);
+
+        })();
+    </script>
 </head>
 <body>
-    <!-- <div class="test a-fade-in"></div> -->
     <div class="g-pages-wrapper">
         <section class="g-page m-page-loading f-dn">
             <img class="loading-img g-pos-center a-fade-in-out" src="./img/loading.png" alt="" />
             <div class="loading-progress j_rate">55%</div>
         </section>
-        <section class="g-page m-page-cover">
+
+        <section class="g-page m-page-cover  f-dn">
             <div class="g-pos-center page-cover-wrapper">
                 <img class="cover-img j_pageCover" src="./img/card_first.png" alt="" />
             </div>
         </section>
 
-        <section class="g-page m-page-quiz f-dn">
+        <section class="g-page m-page-quiz">
             <!-- 由 js 动态构建答题卡片 -->
         </section>
 
-        <section class="g-page m-page-cover">
+        <section class="g-page m-page-cover a-slide-in-right f-dn">
             <div class="g-pos-center page-cover-wrapper">
                 <img class="cover-img j_pageCover" src="./img/card_end.png" alt="" />
             </div>
         </section>
 
-        <section class="g-page m-page-result f-dn">
+        <section class="g-page m-page-result a-slide-in-right f-dn">
             <!-- 由 js 动态构建结果页面 -->
+            <div class="m-quiz-result g-pos-center">
+                <div class="result-title">
+                    遗憾, 你未能进入尧天
+                </div>
+                <div class="result-content">
+                    <div class="tag">
+                        根据你的测试情况，你获得
+                        <div class="tag-name">良友</div>
+                    </div>
+                    <div class="stamp">遗憾</div>
+                </div>
+                <div class="result-comment">
+                    <div class="avatar"></div>
+                    <div class="comment-content">
+                        明世隐评语: 你生性淳朴以诚待人, 不愿过分揣测人心, 是做真诚好友的最佳人选
+                    </div>
+                </div>
+                <div class="result-options">
+                    <div class="option  option-share">告知好友<br/>一起进入尧天</div>
+                    <div class="option option-again">再测一次</div>
+                </div>
+            </div>
         </section>
 
         <div class="m-background">
