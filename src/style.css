@@ -139,7 +139,7 @@ ul, ol, li {
 /* 答题卡片指示器 */
 .m-quiz-cards .m-cards-indicator {
     position: absolute;
-    left: 50%; bottom: -.6rem;
+    left: 50%; bottom: -.3rem;
     font-size: 0;
     transform: translateX(-50%);
 }
@@ -175,7 +175,7 @@ ul, ol, li {
 }
 .m-quiz-card .quiz-card-title {
     position: absolute;
-    top: -.5rem; left: -.2rem; right: -.2rem;
+    top: -.2rem; left: -.2rem; right: -.2rem;
     padding: .2rem .4rem;
     border: 1px solid #a68a5f;
     border-radius: 1rem;
